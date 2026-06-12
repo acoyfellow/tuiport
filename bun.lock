@@ -6,7 +6,7 @@
       "name": "tuiport",
       "dependencies": {
         "@cloudflare/containers": "^0.3.7",
-        "cloudterm": "github:acoyfellow/cloudterm#v0.0.3",
+        "cloudterm": "github:acoyfellow/cloudterm#ab6d29140c4185c28dd6d310cf7422db11ce2532",
         "hono": "^4.12.19",
         "svelte": "^5.55.7",
         "svelte-hono": "^0.1.1",
@@ -337,7 +337,7 @@
 
     "chalk": ["chalk@4.1.2", "", { "dependencies": { "ansi-styles": "^4.1.0", "supports-color": "^7.1.0" } }, "sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA=="],
 
-    "cloudterm": ["cloudterm@github:acoyfellow/cloudterm#eb1ff82", { "dependencies": { "@chenglou/pretext": "^0.0.5" } }, "acoyfellow-cloudterm-eb1ff82", "sha512-kpYvlK0LqSXjSdgKLpIo8hNl64yXzB+/inZOwd+ApHUU7bUF2PAqp+96Ewz4muQyh9BYYBlTK0lILE9Q8QmCpQ=="],
+    "cloudterm": ["cloudterm@github:acoyfellow/cloudterm#ab6d291", { "dependencies": { "@chenglou/pretext": "^0.0.5" } }, "acoyfellow-cloudterm-ab6d291", "sha512-0qnXBhITk3wXO15IG56UsLEI1nGnO11ffY/Vp6PVTH+mrYZA9YWMv00oPcMZl3ae8hOXe+US1jt8dL54E+DFJw=="],
 
     "clsx": ["clsx@2.1.1", "", {}, "sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA=="],
 
