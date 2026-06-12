@@ -6,7 +6,7 @@
 Serve an [OpenTUI](https://github.com/anomalyco/opentui) application over real SSH from a Cloudflare Container.
 
 ```sh
-ssh tuiport.coey.dev
+ssh your-hostname
 ```
 
 Tuiport keeps the SSH server and application on Cloudflare. A 70-line stateless relay carries encrypted SSH bytes from a public TCP address to the Worker because Workers and Containers do not yet accept direct inbound TCP.

@@ -1,7 +1,7 @@
 <script lang="ts">
   let { section = 'home', eyebrow = '' } = $props<{ section: string; eyebrow: string }>();
   let copied = $state(false);
-  const command = 'ssh tuiport.coey.dev';
+  const command = 'ssh your-hostname';
   async function copyCommand() {
     await navigator.clipboard.writeText(command);
     copied = true;
@@ -35,8 +35,8 @@
         </div>
       </div>
       <button class="terminal" onclick={copyCommand} aria-label="Copy SSH command">
-        <div class="chrome"><i></i><i></i><i></i><span>ssh · tuiport.coey.dev</span></div>
-        <pre><b>$</b> ssh tuiport.coey.dev
+        <div class="chrome"><i></i><i></i><i></i><span>ssh · your-hostname</span></div>
+        <pre><b>$</b> ssh your-hostname
 
 ┌────────────── tuiport ──────────────┐
 │                                     │
