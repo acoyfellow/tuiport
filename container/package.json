@@ -1,0 +1,10 @@
+{
+  "name": "tuiport-container",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@opentui/core": "0.4.1",
+    "@opentui/ssh": "0.4.1"
+  }
+}

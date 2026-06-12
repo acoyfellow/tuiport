@@ -1,0 +1,8 @@
+node_modules
+build
+.git
+.wrangler
+.alchemy
+.env
+.dev.vars
+relay

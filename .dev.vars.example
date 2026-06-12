@@ -1,0 +1,4 @@
+# Generate with: openssl rand -hex 32
+RELAY_TOKEN=replace-me
+# Generate with: openssl genpkey -algorithm ED25519 | base64
+SSH_HOST_KEY_B64=replace-me

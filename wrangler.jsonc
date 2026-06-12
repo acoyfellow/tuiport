@@ -1,0 +1,24 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tuiport",
+  "main": "build/worker.bundled.mjs",
+  "compatibility_date": "2026-06-12",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "observability": { "enabled": true },
+  "build": { "command": "bun run build" },
+  "containers": [
+    {
+      "name": "tuiport-app",
+      "class_name": "TuiportContainer",
+      "image": "./container/Dockerfile",
+      "image_build_context": ".",
+      "instance_type": "lite",
+      "max_instances": 1
+    }
+  ],
+  "durable_objects": {
+    "bindings": [{ "name": "TUIPORT", "class_name": "TuiportContainer" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["TuiportContainer"] }]
+}

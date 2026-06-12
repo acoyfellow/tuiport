@@ -1,0 +1,43 @@
+{
+  "name": "tuiport",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Serve OpenTUI applications over SSH from a Cloudflare Container.",
+  "scripts": {
+    "build": "bun run build.mjs",
+    "check": "bun run build && tsc --noEmit && biome check .",
+    "dev": "bun run build && wrangler dev",
+    "deploy": "bun run build && wrangler deploy",
+    "deploy:alchemy": "bun run build && alchemy deploy",
+    "destroy": "alchemy destroy",
+    "public:check": "bash scripts/check-public.sh",
+    "relay:build": "cd relay && go build ./..."
+  },
+  "dependencies": {
+    "@cloudflare/containers": "^0.3.7",
+    "hono": "^4.12.19",
+    "svelte": "^5.55.7",
+    "svelte-hono": "^0.1.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.3.15",
+    "@cloudflare/workers-types": "^4.20260612.1",
+    "@types/node": "^25.0.0",
+    "alchemy": "^0.93.7",
+    "esbuild": "^0.25.10",
+    "esbuild-svelte": "^0.9.5",
+    "typescript": "^6.0.3",
+    "wrangler": "^4.92.0"
+  },
+  "cloudflare": {
+    "bindings": {
+      "RELAY_TOKEN": {
+        "description": "A random secret used by the TCP relay. Generate one with `openssl rand -hex 32`."
+      },
+      "SSH_HOST_KEY_B64": {
+        "description": "A stable Ed25519 SSH host key. Generate one with `openssl genpkey -algorithm ED25519 | base64`."
+      }
+    }
+  }
+}
