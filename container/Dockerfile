@@ -1,4 +1,4 @@
-FROM oven/bun:1.3.0-alpine
+FROM oven/bun:1.3.0-slim
 WORKDIR /app
 COPY container/package.json ./package.json
 RUN bun install --production
