@@ -68,10 +68,16 @@ function mountTuiport(
     borderStyle: 'rounded',
     title: ' tuiport / live ',
     titleAlignment: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    paddingTop: 2,
+    paddingLeft: 3,
   });
-  const content = new TextRenderable(renderer, { content: '' });
+  const content = new TextRenderable(renderer, {
+    width: '100%',
+    content: '',
+  });
   shell.add(content);
   renderer.root.add(shell);
 
