@@ -9,7 +9,7 @@
 | `GET /how-to` | Task-oriented guides |
 | `GET /reference` | Reference |
 | `GET /explanation` | Architecture explanation |
-| `GET /api/health` | Starts/checks the Container |
+| `GET /api/health` | Reports Worker readiness without waking the Container |
 | `WS /bridge` | Binary SSH stream; bearer token required |
 
 ## Ports

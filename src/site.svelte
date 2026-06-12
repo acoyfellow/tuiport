@@ -96,7 +96,7 @@ bun run dev</code></pre><p>Container development requires Docker. Test the conta
     <article class="doc"><h1>Reference</h1><p class="summary">Ports, endpoints, bindings, and trust boundaries.</p>
       <table><tbody>
         <tr><th><code>GET /</code></th><td>Public svelte-hono documentation.</td></tr>
-        <tr><th><code>GET /api/health</code></th><td>Starts the singleton Container and reports readiness.</td></tr>
+        <tr><th><code>GET /api/health</code></th><td>Reports Worker readiness without waking the Container.</td></tr>
         <tr><th><code>WS /bridge</code></th><td>Opaque SSH byte stream. Requires <code>Authorization: Bearer …</code>.</td></tr>
         <tr><th><code>:8080</code></th><td>Container HTTP and WebSocket bridge.</td></tr>
         <tr><th><code>:2222</code></th><td><code>@opentui/ssh</code> inside the Container.</td></tr>

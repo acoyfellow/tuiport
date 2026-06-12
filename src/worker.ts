@@ -64,11 +64,7 @@ for (const [path, page] of Object.entries(pages)) {
   );
 }
 
-app.get('/api/health', async (c) => {
-  const container = getContainer(c.env.TUIPORT, 'default');
-  const response = await container.fetch(new Request('http://container/health'));
-  return c.json({ edge: 'ok', container: response.ok ? 'ok' : 'starting' });
-});
+app.get('/api/health', (c) => c.json({ edge: 'ok' }));
 
 app.get('/bridge', async (c) => {
   if (c.req.header('upgrade')?.toLowerCase() !== 'websocket') {
