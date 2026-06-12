@@ -217,6 +217,26 @@ for (const [path, page] of Object.entries(pages)) {
 
 app.get('/api/health', (c) => c.json({ edge: 'ok' }));
 
+app.get('/ws/demo', async (c) => {
+  if (c.req.header('upgrade')?.toLowerCase() !== 'websocket') {
+    return c.text('WebSocket upgrade required', 426);
+  }
+  const originHeader = c.req.header('origin');
+  const allowedOrigin =
+    originHeader === origin ||
+    originHeader === 'http://localhost:8787' ||
+    originHeader === 'http://127.0.0.1:8787';
+  if (!allowedOrigin) return c.text('Forbidden', 403);
+
+  const containerUrl = new URL(c.req.url);
+  containerUrl.pathname = '/demo';
+  const headers = new Headers(c.req.raw.headers);
+  headers.set('x-tuiport-colo', String(c.req.raw.cf?.colo || 'Cloudflare edge'));
+  return getContainer(c.env.TUIPORT, 'default').fetch(
+    new Request(containerUrl, { headers, method: 'GET' }),
+  );
+});
+
 app.get('/bridge', async (c) => {
   if (c.req.header('upgrade')?.toLowerCase() !== 'websocket') {
     return c.text('WebSocket upgrade required', 426);

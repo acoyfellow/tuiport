@@ -20,6 +20,16 @@ OpenSSH ──TCP──▶ Spectrum ──TCP──▶ relay ──WSS──▶ 
 
 The relay cannot read the SSH session. It only converts transports and is designed to be deleted when Cloudflare supports native TCP ingress to a Container.
 
+## Live browser session
+
+The landing page also runs a constrained version of the same OpenTUI application directly in the browser:
+
+```text
+cloudterm → same-origin WebSocket → Worker → Durable Object → Container → OpenTUI
+```
+
+This is a real Container-backed session, not a recording. It intentionally exposes no shell, command execution, filesystem, or visitor credentials. The direct WebSocket path exists for dogfooding; ordinary SSH remains the product interface.
+
 ## Deploy
 
 1. Click **Deploy to Cloudflare** above.
@@ -61,7 +71,7 @@ The sample accepts any **verified** public key. Set `SSH_HOST_KEY_B64` before sh
 
 | Path | Purpose |
 |---|---|
-| `src/` | svelte-hono docs site, relay authentication, Container binding |
+| `src/` | svelte-hono site, embedded cloudterm session, routing, and Container binding |
 | `container/` | OpenTUI SSH application and local byte bridge |
 | `relay/` | minimal TCP-to-WebSocket adapter |
 | `docs/` | Diátaxis documentation |

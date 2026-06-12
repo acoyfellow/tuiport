@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@cloudflare/containers": "^0.3.7",
+    "cloudterm": "github:acoyfellow/cloudterm#v0.0.3",
     "hono": "^4.12.19",
     "svelte": "^5.55.7",
     "svelte-hono": "^0.1.1"

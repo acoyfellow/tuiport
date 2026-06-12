@@ -10,6 +10,7 @@
 | `GET /reference` | Reference |
 | `GET /explanation` | Architecture explanation |
 | `GET /api/health` | Reports Worker readiness without waking the Container |
+| `WS /ws/demo` | Same-origin, constrained OpenTUI browser session; no shell |
 | `WS /bridge` | Binary SSH stream; bearer token required |
 
 ## Ports
@@ -36,3 +37,5 @@
 `SSH_HOST_KEY_B64` is a base64-encoded Ed25519 private key in PEM form. If omitted, the Container generates an ephemeral development key.
 
 The sample SSH policy accepts any valid public key after proof-of-possession verification. It does not accept passwords.
+
+The browser demo is a separate transport and never reaches SSH port 2222. It mounts an OpenTUI renderer directly, accepts bounded keyboard input, caps concurrent sessions, and reaps idle and maximum-duration sessions.
