@@ -1,8 +1,8 @@
 {
   "id": "/",
-  "name": "Tuiport — Agent Experience for the Terminal",
+  "name": "Tuiport — OpenTUI SSH Apps on Cloudflare",
   "short_name": "Tuiport",
-  "description": "A shared terminal interface for agents and humans, built with OpenTUI and served over real SSH from Cloudflare.",
+  "description": "Build Wish-style SSH applications with OpenTUI, run the same container locally or on Cloudflare, and connect with ordinary SSH.",
   "lang": "en-US",
   "dir": "ltr",
   "start_url": "/?source=pwa",

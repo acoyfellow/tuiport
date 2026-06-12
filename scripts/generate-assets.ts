@@ -43,16 +43,16 @@ const socialSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="
   <circle cx="994" cy="354" r="108" fill="url(#core)" style="mix-blend-mode:screen"/>
   <path d="M846 274c38-79 123-110 197-79" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width="25" stroke-linecap="round"/>
   <circle cx="84" cy="84" r="10" fill="#f6821f"/><text x="108" y="92" fill="#f7f9fb" font-family="Arial,sans-serif" font-size="25" font-weight="700">AGENT EXPERIENCE</text>
-  <text x="76" y="238" fill="#f7f9fb" font-family="Arial,sans-serif" font-size="88" font-weight="750" letter-spacing="-5">Your terminal is</text>
-  <text x="76" y="326" fill="#9ccfe2" font-family="Arial,sans-serif" font-size="88" font-weight="500" letter-spacing="-5">the interface.</text>
-  <text x="80" y="392" fill="#c8d4dd" font-family="Arial,sans-serif" font-size="25">Agents and humans, one SSH command away.</text>
-  <text x="80" y="532" fill="#f6821f" font-family="monospace" font-size="18" font-weight="600" letter-spacing="2">AGENT EXPERIENCE · TUIPORT</text>
+  <text x="76" y="238" fill="#f7f9fb" font-family="Arial,sans-serif" font-size="76" font-weight="750" letter-spacing="-4">Wish-style SSH apps.</text>
+  <text x="76" y="316" fill="#9ccfe2" font-family="Arial,sans-serif" font-size="76" font-weight="500" letter-spacing="-4">Built with OpenTUI.</text>
+  <text x="80" y="382" fill="#c8d4dd" font-family="Arial,sans-serif" font-size="25">Install. Run. Connect with ordinary SSH.</text>
+  <text x="80" y="532" fill="#f6821f" font-family="monospace" font-size="18" font-weight="600" letter-spacing="2">TUIPORT · OPENTUI ON CLOUDFLARE</text>
 </svg>`;
 
 const mobileScreenshot = `<svg xmlns="http://www.w3.org/2000/svg" width="750" height="1334" viewBox="0 0 750 1334">${orb}
   <rect width="750" height="1334" fill="#0b1118"/><circle cx="590" cy="255" r="220" fill="url(#orb)" opacity=".38"/>
   <text x="50" y="78" fill="#f7f9fb" font-family="Arial,sans-serif" font-size="26" font-weight="700">AGENT EXPERIENCE</text>
-  <text x="50" y="230" fill="#f7f9fb" font-family="Arial,sans-serif" font-size="72" font-weight="750">Your terminal is</text><text x="50" y="304" fill="#9ccfe2" font-family="Arial,sans-serif" font-size="72">the interface.</text>
+  <text x="50" y="230" fill="#f7f9fb" font-family="Arial,sans-serif" font-size="60" font-weight="750">Wish-style SSH apps.</text><text x="50" y="298" fill="#9ccfe2" font-family="Arial,sans-serif" font-size="60">Built with OpenTUI.</text>
   <rect x="38" y="412" width="674" height="570" rx="14" fill="#080d13" stroke="#4f6273"/>
   <text x="72" y="472" fill="#63d5a2" font-family="monospace" font-size="18">● LIVE SESSION</text>
   <text x="72" y="560" fill="#f6821f" font-family="monospace" font-size="24">$ ssh your-hostname</text>

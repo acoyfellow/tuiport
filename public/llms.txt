@@ -1,6 +1,6 @@
 # Tuiport
 
-> An Agent Experience release: a shared terminal interface for agents and humans, served over real SSH from a Cloudflare Container.
+> Build Wish-style SSH applications with OpenTUI, run the same container locally or on Cloudflare, and connect from any terminal with ordinary SSH.
 
 Canonical site: https://tuiport.coey.dev
 Source: https://github.com/acoyfellow/tuiport

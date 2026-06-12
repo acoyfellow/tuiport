@@ -27,9 +27,9 @@ const repository = 'https://github.com/acoyfellow/tuiport';
 const pages = {
   '/': {
     section: 'home',
-    title: 'Tuiport — A Shared Terminal Interface for Agents and Humans',
+    title: 'Tuiport — OpenTUI SSH Apps on Cloudflare',
     description:
-      'A shared terminal interface for agents and humans, built with OpenTUI and served over real SSH from a Cloudflare Container.',
+      'Build Wish-style SSH applications with OpenTUI, run the same container locally or on Cloudflare, and connect from any terminal with ordinary SSH.',
     eyebrow: 'OpenTUI · SSH · Cloudflare Containers',
   },
   '/tutorial': {
