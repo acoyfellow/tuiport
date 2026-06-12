@@ -34,28 +34,28 @@ function mountTuiport(
 ) {
   const panels = [
     {
-      label: 'PATH',
+      label: 'HOW IT WORKS',
       body: [
-        'browser terminal -> same-origin WebSocket',
-        'Worker -> Durable Object -> Container',
-        'OpenTUI renderer -> ANSI frames -> cloudterm',
+        'You are controlling an OpenTUI app running in a real',
+        'Cloudflare Container. Your browser sends keys; the',
+        'Container sends terminal frames back.',
       ],
     },
     {
-      label: 'BOUNDARY',
+      label: 'SAFETY',
       body: [
-        'No shell. No command execution. No visitor credentials.',
-        'This keyboard controls only this OpenTUI application.',
-        'Sessions are capped, idle-reaped, and held in memory.',
+        'This demo is an app, not a shell.',
+        'It cannot run commands or access a filesystem.',
+        'The session closes automatically when idle.',
       ],
     },
     {
       label: 'RUNTIME',
       body: [
-        `identity   ${options.identity}`,
+        `session    ${options.identity}`,
         `edge       ${options.environment}`,
-        'compute    Cloudflare Container / lite',
-        'state      per-connection / ephemeral',
+        'compute    Cloudflare Container',
+        'state      temporary / per visitor',
       ],
     },
   ];
@@ -78,19 +78,31 @@ function mountTuiport(
   const paint = () => {
     const panel = panels[selected];
     content.content = [
-      'YOUR TERMINAL IS THE INTERFACE',
+      'TUIPORT LIVE DEMO',
+      'A real OpenTUI session on Cloudflare',
       '',
-      panels.map((item, index) => `${index === selected ? '>' : ' '} ${item.label}`).join('   '),
+      panels
+        .map((item, index) => `${index === selected ? '>' : ' '} ${index + 1}. ${item.label}`)
+        .join('   '),
       '',
       ...panel.body,
       '',
-      '[left/right] explore    [q] close session',
+      '[1/2/3] choose view    [q] close',
     ].join('\n');
   };
   paint();
 
   renderer.keyInput.on('keypress', (key) => {
-    if (key.name === 'left' || key.name === 'h') {
+    if (key.name === '1') {
+      selected = 0;
+      paint();
+    } else if (key.name === '2') {
+      selected = 1;
+      paint();
+    } else if (key.name === '3') {
+      selected = 2;
+      paint();
+    } else if (key.name === 'left' || key.name === 'h') {
       selected = (selected + panels.length - 1) % panels.length;
       paint();
     } else if (key.name === 'right' || key.name === 'l' || key.name === 'tab') {

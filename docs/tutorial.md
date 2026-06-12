@@ -38,9 +38,19 @@ go build
 
 The relay forwards bytes and holds no application state.
 
-## Configure Spectrum
+## Connect your SSH hostname
 
-Create an SSH Spectrum application with edge port `22`, the relay's address as its origin, and origin port `22`. Keep TLS termination off; SSH provides its own encryption.
+[Cloudflare Spectrum](https://developers.cloudflare.com/spectrum/) is Cloudflare's public TCP proxy. It receives `ssh ssh.example.com:22` and forwards the encrypted SSH bytes to your relay.
+
+Create one Spectrum SSH application with:
+
+- hostname: `ssh.example.com`
+- edge port: `22`
+- origin: the relay's public TCP address
+- origin port: `22`
+- TLS termination: off, because SSH provides its own encryption
+
+Spectrum requires a paid Cloudflare plan. Configure it separately after deployment; Deploy to Cloudflare does not currently provision Spectrum applications.
 
 ## Connect
 
