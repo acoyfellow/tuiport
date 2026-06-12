@@ -65,7 +65,10 @@
       });
 
       const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-      const socket = new WebSocket(`${protocol}//${location.host}/ws/demo`);
+      const size = pendingDemoSize || { cols: 80, rows: 24 };
+      const socket = new WebSocket(
+        `${protocol}//${location.host}/ws/demo?cols=${size.cols}&rows=${size.rows}`,
+      );
       socket.binaryType = 'arraybuffer';
       demoSocket = socket;
       socket.onopen = () => {
@@ -226,7 +229,7 @@
     </div>
 
     <div class="cards">
-      <article><span>01</span><h2>Real SSH</h2><p>No browser terminal and no custom client. PTYs, resize events, SSH keys, and terminal capabilities arrive intact.</p></article>
+      <article><span>01</span><h2>Real SSH</h2><p>The product path needs no browser terminal or custom client. PTYs, resize events, SSH keys, and terminal capabilities arrive intact.</p></article>
       <article><span>02</span><h2>Tiny boundary</h2><p>The relay terminates nothing. It forwards opaque bytes over an authenticated WebSocket; the SSH server stays in your Container.</p></article>
       <article><span>03</span><h2>Made to disappear</h2><p>When Cloudflare accepts inbound TCP natively, remove the relay. The app and its OpenTUI session code do not change.</p></article>
     </div>
