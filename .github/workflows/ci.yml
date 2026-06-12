@@ -25,4 +25,5 @@ jobs:
       - run: bun install --frozen-lockfile
       - run: bun run check
       - run: bun run public:check
+      - run: bun run site:audit -- https://tuiport.coey.dev
       - run: cd relay && go test ./...
