@@ -5,6 +5,13 @@
     "formatter": { "quoteStyle": "single", "trailingCommas": "all", "semicolons": "always" }
   },
   "files": {
-    "includes": ["**", "!build", "!node_modules", "!src/bundles.generated.ts", "!**/*.svelte"]
+    "includes": [
+      "**",
+      "!build",
+      "!node_modules",
+      "!.alchemy",
+      "!src/bundles.generated.ts",
+      "!**/*.svelte"
+    ]
   }
 }
