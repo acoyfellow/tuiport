@@ -92,7 +92,7 @@
         </div>
         <div class="hero-meta"><span>Agent Experience / Tuiport</span><span>Open protocol / bounded runtime</span></div>
       </div>
-      <div class="terminal" aria-label="Tuiport SSH session preview">
+      <div class="terminal" role="group" aria-label="Tuiport SSH session preview">
         <div class="chrome"><span class="state"><i></i> live session</span><span>ssh · your-hostname</span></div>
         <pre><b>$</b> ssh your-hostname
 
@@ -110,7 +110,7 @@
       </div>
     </section>
 
-    <div class="flow" aria-label="Architecture">
+    <div class="flow" role="group" aria-label="Architecture">
       <div><b>01</b><strong>SSH client</strong><span>unchanged OpenSSH</span></div><i>→</i>
       <div><b>02</b><strong>TCP relay</strong><span>bytes only</span></div><i>→</i>
       <div class="cloud"><b>03</b><strong>Cloudflare</strong><span>Worker · DO · Container</span></div><i>→</i>
