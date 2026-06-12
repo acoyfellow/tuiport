@@ -228,12 +228,11 @@ app.get('/ws/demo', async (c) => {
     originHeader === 'http://127.0.0.1:8787';
   if (!allowedOrigin) return c.text('Forbidden', 403);
 
-  const containerUrl = new URL(c.req.url);
-  containerUrl.pathname = '/demo';
   const headers = new Headers(c.req.raw.headers);
   headers.set('x-tuiport-colo', String(c.req.raw.cf?.colo || 'Cloudflare edge'));
+  headers.set('x-tuiport-inner-path', '/demo');
   return getContainer(c.env.TUIPORT, 'default').fetch(
-    new Request(containerUrl, { headers, method: 'GET' }),
+    new Request(c.req.raw, { headers, method: 'GET' }),
   );
 });
 

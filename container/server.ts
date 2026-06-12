@@ -202,8 +202,9 @@ Bun.serve<SocketData>({
   port: 8080,
   fetch(request, server) {
     const url = new URL(request.url);
-    if (url.pathname === '/health') return Response.json({ ok: true, service: 'tuiport' });
-    if (url.pathname === '/demo') {
+    const innerPath = request.headers.get('x-tuiport-inner-path') || url.pathname;
+    if (innerPath === '/health') return Response.json({ ok: true, service: 'tuiport' });
+    if (innerPath === '/demo') {
       const cols = Number(url.searchParams.get('cols')) || 80;
       const rows = Number(url.searchParams.get('rows')) || 24;
       const colo = request.headers.get('x-tuiport-colo') || 'Cloudflare edge';
@@ -212,7 +213,7 @@ Bun.serve<SocketData>({
       }
       return;
     }
-    if (url.pathname !== '/bridge') return new Response('not found', { status: 404 });
+    if (innerPath !== '/bridge') return new Response('not found', { status: 404 });
     if (!server.upgrade(request, { data: { mode: 'ssh' } })) {
       return new Response('upgrade required', { status: 426 });
     }
