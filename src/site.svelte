@@ -11,14 +11,29 @@
 
 <svelte:head>
   <meta name="description" content="Serve OpenTUI applications over SSH from a Cloudflare Container." />
+  <meta name="theme-color" content="#0b1118" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 </svelte:head>
 
 <header>
-  <a class="brand" href="/" aria-label="Tuiport home"><span>◈</span> tuiport</a>
+  <a class="brand" href="/" aria-label="Tuiport home">
+    <svg viewBox="0 0 64 64" role="img" aria-label="Agent Experience flight mark">
+      <circle class="mark-field" cx="32" cy="32" r="26" />
+      <path class="mark-orbit orbit-a" d="M10 38A24 24 0 0 1 43 10" />
+      <path class="mark-orbit orbit-b" d="M51 20a24 24 0 0 1-7 34" />
+      <path class="mark-wing-a" d="M12 31 25 20l8 7 12-11 9 4-21 19Z" />
+      <path class="mark-wing-b" d="m25 20 8 7v12l-9-8-12 0Z" />
+      <path class="mark-fold" d="m33 27 12-11 9 4-21 19Z" />
+      <circle class="mark-node" cx="50" cy="46" r="2.5" />
+    </svg>
+    <span><strong>Agent Experience</strong><em>Tuiport / Field experiment 001</em></span>
+  </a>
   <nav aria-label="Documentation">
-    <a href="/tutorial">tutorial</a><a href="/how-to">how-to</a><a href="/reference">reference</a><a href="/explanation">why</a>
+    <a href="/tutorial">Tutorial</a><a href="/how-to">How-to</a><a href="/reference">Reference</a><a href="/explanation">Why</a>
   </nav>
-  <a class="github" href="https://github.com/acoyfellow/tuiport">GitHub ↗</a>
+  <a class="github" href="https://github.com/acoyfellow/tuiport">Source <span aria-hidden="true">↗</span></a>
 </header>
 
 <main>
@@ -26,16 +41,20 @@
 
   {#if section === 'home'}
     <section class="hero">
-      <div>
-        <h1>Your OpenTUI app.<br /><em>One SSH command away.</em></h1>
-        <p class="lede">Tuiport runs an <code>@opentui/ssh</code> server inside a Cloudflare Container and gives it a small, auditable path to the public Internet.</p>
+      <div class="hero-grid" aria-hidden="true"></div>
+      <div class="hero-glow" aria-hidden="true"></div>
+      <div class="hero-copy">
+        <div class="badge"><i></i> Agent Experience / Cloudflare</div>
+        <h1>OpenTUI on Cloudflare.<br /><em>One SSH command away.</em></h1>
+        <p class="lede">A working field experiment for agents and humans who live in terminals. Tuiport runs the SSH server, session, and interface inside a Cloudflare Container.</p>
         <div class="actions">
-          <a class="primary" href="https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/tuiport">Deploy to Cloudflare</a>
-          <a class="secondary" href="/tutorial">Build your own →</a>
+          <a class="primary" href="https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/tuiport">Deploy to Cloudflare <span>↘</span></a>
+          <a class="secondary" href="/tutorial">Read the tutorial</a>
         </div>
+        <div class="hero-meta"><span>AX–FIELD–001</span><span>Open protocol / bounded runtime</span></div>
       </div>
       <button class="terminal" onclick={copyCommand} aria-label="Copy SSH command">
-        <div class="chrome"><i></i><i></i><i></i><span>ssh · your-hostname</span></div>
+        <div class="chrome"><span class="state"><i></i> live session</span><span>ssh · your-hostname</span></div>
         <pre><b>$</b> ssh your-hostname
 
 ┌────────────── tuiport ──────────────┐
@@ -48,7 +67,7 @@
 │  press q to disconnect              │
 │                                     │
 └─────────────────────────────────────┘</pre>
-        <small>{copied ? 'copied!' : 'click to copy'}</small>
+        <small>{copied ? 'copied!' : 'click to copy command'}</small>
       </button>
     </section>
 
@@ -114,15 +133,18 @@ bun run dev</code></pre><p>Container development requires Docker. Test the conta
   {/if}
 </main>
 
-<footer><span>Built for the terminal.</span><span>MIT · 0.0.1 · <a href="https://coey.dev">coey.dev</a></span></footer>
+<footer><span>Cloudflare / Agent Experience</span><span>FIELD EXPERIMENT 001 · MIT · 0.0.1</span><a href="https://coey.dev">coey.dev ↗</a></footer>
 
 <style>
-  :global(*){box-sizing:border-box} :global(body){margin:0;background:#090a0d;color:#eef1f4;font-family:Inter,ui-sans-serif,system-ui,sans-serif} :global(a){color:inherit} :global(code),pre{font-family:"SFMono-Regular",Consolas,monospace}
-  header,footer,main{max-width:1180px;margin:auto} header{height:74px;display:flex;align-items:center;border-bottom:1px solid #252830;padding:0 24px;gap:34px}.brand{text-decoration:none;font-weight:750;font-size:20px;letter-spacing:-.03em}.brand span{color:#f48120}nav{display:flex;gap:22px;margin-left:auto}nav a,.github{font:13px monospace;text-decoration:none;color:#a7acb5}nav a:hover,.github:hover{color:white}.github{border:1px solid #343842;padding:8px 11px;border-radius:6px}
-  main{padding:70px 24px 100px}.eyebrow{font:12px monospace;text-transform:uppercase;letter-spacing:.13em;color:#f48120;margin:0 0 28px}.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:70px;align-items:center;min-height:440px}h1{font-size:58px;line-height:1.02;letter-spacing:-.055em;margin:0 0 26px}h1 em{font-style:normal;color:#f48120}.lede,.summary{font-size:19px;line-height:1.65;color:#a9afb9;max-width:650px}.actions{display:flex;gap:13px;margin-top:34px}.primary,.secondary{display:inline-block;text-decoration:none;padding:13px 17px;border-radius:6px;font-weight:700;font-size:14px}.primary{background:#f48120;color:#17100a}.secondary{border:1px solid #343842;color:#d8dce1}
-  .terminal{position:relative;text-align:left;padding:0;background:#101218;color:#d8dee9;border:1px solid #343842;border-radius:10px;box-shadow:0 28px 80px #0009;overflow:hidden;cursor:pointer;width:100%}.chrome{height:39px;border-bottom:1px solid #292d36;display:flex;align-items:center;padding:0 13px;gap:7px}.chrome i{width:9px;height:9px;border-radius:50%;background:#3a3e48}.chrome i:first-child{background:#f48120}.chrome span{font:11px monospace;color:#777e89;margin-left:7px}.terminal pre{font-size:13px;line-height:1.55;padding:23px 27px;margin:0;color:#cbd1da}.terminal pre b{color:#f48120}.terminal small{position:absolute;right:12px;bottom:10px;color:#777e89;font:10px monospace}
-  .flow{margin:100px 0 52px;border:1px solid #292d36;border-radius:9px;display:flex;align-items:center;justify-content:space-around;padding:25px;background:#0d0f13}.flow div{display:flex;flex-direction:column;gap:5px}.flow b{font:10px monospace;color:#676d77}.flow strong{font-size:14px}.flow span{font:11px monospace;color:#7f8590}.flow i{color:#4d535d}.flow .cloud strong{color:#f48120}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.cards article{border-top:1px solid #343842;padding:25px 4px}.cards span{font:11px monospace;color:#f48120}.cards h2{font-size:22px}.cards p,.doc p,.doc li{color:#a9afb9;line-height:1.7}
-  .doc{max-width:780px;margin:0 auto}.doc h1{font-size:49px}.doc h2{margin-top:48px;font-size:24px;letter-spacing:-.02em}.doc pre{background:#111319;border:1px solid #2d313a;border-radius:7px;padding:18px;overflow:auto;line-height:1.6}.doc table{border-collapse:collapse;width:100%;margin-top:30px}.doc th,.doc td{text-align:left;border-bottom:1px solid #292d36;padding:15px 10px}.doc td{color:#a9afb9}.doc th{width:190px}
-  footer{border-top:1px solid #252830;padding:28px 24px 55px;display:flex;justify-content:space-between;color:#777e89;font:12px monospace}
-  @media(max-width:800px){header nav{display:none}.github{margin-left:auto}.hero{grid-template-columns:1fr;gap:40px}h1{font-size:43px}.flow{overflow:auto;justify-content:flex-start;gap:20px}.cards{grid-template-columns:1fr}.terminal pre{font-size:10px;padding:18px 12px}main{padding-top:45px}.doc h1{font-size:40px}}
+  :global(:root){color-scheme:dark;--font-sans:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;--font-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;--ax-ink:#0b1118;--ax-layer:#111a24;--ax-layer-2:#182431;--ax-layer-3:#223141;--ax-text:#f7f9fb;--ax-muted:#9baaba;--ax-border:rgba(174,196,216,.14);--ax-border-strong:rgba(174,196,216,.27);--ax-orange:#f6821f;--ax-amber:#f7b53b;--ax-orange-soft:rgba(246,130,31,.12);--ax-blue:#2678a4;--ax-blue-light:#71b8d8;--ax-blue-soft:rgba(74,154,194,.13);--ax-green:#63d5a2;--ax-green-soft:rgba(59,207,145,.11);--radius-sm:.25rem;--radius-md:.45rem;--radius-lg:.7rem}
+  :global(*){box-sizing:border-box}:global(html){scroll-behavior:smooth}:global(body){min-width:320px;margin:0;background:var(--ax-ink);color:var(--ax-text);font-family:var(--font-sans);font-synthesis:none}:global(a){color:inherit}:global(code),pre{font-family:var(--font-mono)}:global(::selection){background:var(--ax-orange);color:#170900}
+  header,footer,main{max-width:1280px;margin:auto}header{height:76px;display:flex;align-items:center;border-bottom:1px solid var(--ax-border);padding:0 28px;gap:36px}.brand{display:flex;align-items:center;gap:.65rem;text-decoration:none}.brand svg{width:2.15rem;overflow:visible;flex:none}.brand span{display:grid;line-height:1;letter-spacing:-.025em}.brand strong{font-size:.9rem}.brand em{margin-top:.28rem;color:var(--ax-muted);font:400 .66rem/1 var(--font-mono);font-style:normal;letter-spacing:.01em}.mark-field{fill:var(--ax-orange-soft);stroke:var(--ax-orange);stroke-width:1.2}.mark-orbit{fill:none;stroke:var(--ax-blue-light);stroke-width:1.1;stroke-linecap:round;opacity:.72}.orbit-a{stroke-dasharray:2 4}.orbit-b{stroke-dasharray:8 4}.mark-wing-a{fill:var(--ax-text)}.mark-wing-b{fill:#b5c6d3}.mark-fold{fill:#6e91a6}.mark-node{fill:var(--ax-amber)}nav{display:flex;gap:24px;margin-left:auto}nav a,.github{color:var(--ax-muted);font:500 .68rem/1 var(--font-mono);text-decoration:none;text-transform:uppercase;letter-spacing:.045em;transition:.15s}nav a:hover,.github:hover{color:var(--ax-text)}.github{border:1px solid var(--ax-border-strong);border-radius:var(--radius-md);padding:.65rem .75rem}
+  main{padding:72px 28px 112px}.eyebrow{display:flex;align-items:center;gap:.55rem;margin:0 0 28px;color:var(--ax-orange);font:600 .68rem/1 var(--font-mono);letter-spacing:.12em;text-transform:uppercase}.eyebrow::before{content:'';width:1.25rem;height:1px;background:currentColor}.hero{position:relative;display:grid;grid-template-columns:1.08fr .92fr;gap:clamp(36px,6vw,90px);align-items:center;min-height:540px;padding:clamp(30px,5vw,68px);border:1px solid var(--ax-border);border-radius:var(--radius-lg);background:linear-gradient(110deg,rgba(8,13,19,.98),rgba(13,31,43,.9));overflow:hidden}.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:4rem 4rem;mask-image:linear-gradient(90deg,#000,transparent 80%);pointer-events:none}.hero-glow{position:absolute;right:-15%;top:-45%;width:65%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(38,120,164,.34),transparent 65%);pointer-events:none}.hero-copy,.terminal{position:relative;z-index:1}.badge{display:inline-flex;align-items:center;gap:.5rem;width:max-content;padding:.4rem .55rem;border:1px solid var(--ax-border-strong);border-radius:999px;color:#d7e5ec;background:rgba(8,13,19,.55);backdrop-filter:blur(8px);font:600 .58rem/1 var(--font-mono);text-transform:uppercase;letter-spacing:.055em}.badge i{width:.42rem;height:.42rem;border-radius:50%;background:var(--ax-orange);box-shadow:0 0 0 3px var(--ax-orange-soft)}h1{margin:1.2rem 0 1.2rem;font-size:clamp(3.25rem,6.1vw,6.35rem);line-height:.9;letter-spacing:-.072em;font-weight:730}h1 em{color:#9ccfe2;font-style:normal;font-weight:500}.lede,.summary{max-width:650px;color:#c8d4dd;font-size:clamp(1rem,1.6vw,1.18rem);line-height:1.65}.actions{display:flex;gap:.65rem;margin-top:2rem}.primary,.secondary{display:inline-flex;align-items:center;justify-content:center;gap:.6rem;min-height:2.7rem;padding:0 1rem;border-radius:var(--radius-md);font-size:.76rem;font-weight:650;text-decoration:none;transition:.15s}.primary{border:1px solid var(--ax-orange);background:var(--ax-orange);color:#1d0b00}.primary:hover{background:#ff9b49}.secondary{border:1px solid var(--ax-border-strong);background:var(--ax-layer-2);color:var(--ax-text)}.secondary:hover{border-color:var(--ax-blue-light)}.hero-meta{display:flex;gap:1.4rem;margin-top:2.2rem;color:var(--ax-muted);font:500 .55rem/1.5 var(--font-mono);text-transform:uppercase;letter-spacing:.07em}.hero-meta span:first-child{color:var(--ax-orange)}
+  .terminal{text-align:left;padding:0;width:100%;border:1px solid var(--ax-border-strong);border-radius:var(--radius-lg);background:#080d13;color:#d7e2ec;box-shadow:0 32px 100px rgba(0,0,0,.42);overflow:hidden;cursor:pointer;transform:perspective(900px) rotateY(-2deg)}.chrome{height:42px;display:flex;align-items:center;justify-content:space-between;padding:0 .85rem;border-bottom:1px solid var(--ax-border);color:var(--ax-muted);font:500 .58rem/1 var(--font-mono);text-transform:uppercase;letter-spacing:.05em}.chrome .state{display:flex;align-items:center;gap:.45rem}.chrome i{width:.42rem;height:.42rem;border-radius:50%;background:var(--ax-green);box-shadow:0 0 0 3px var(--ax-green-soft)}.terminal pre{min-height:318px;margin:0;padding:1.6rem;font-size:.76rem;line-height:1.65;color:#d7e2ec}.terminal pre b{color:var(--ax-orange)}.terminal small{position:absolute;right:.8rem;bottom:.65rem;color:var(--ax-muted);font:500 .55rem/1 var(--font-mono);text-transform:uppercase;letter-spacing:.05em}
+  .flow{display:grid;grid-template-columns:1fr auto 1fr auto 1.25fr auto 1fr;align-items:center;gap:1rem;margin:1rem 0;border:1px solid var(--ax-border);border-radius:var(--radius-lg);padding:1.2rem;background:var(--ax-layer)}.flow div{display:flex;flex-direction:column;gap:.35rem}.flow b{color:var(--ax-orange);font:600 .58rem/1 var(--font-mono)}.flow strong{font-size:.85rem}.flow span{color:var(--ax-muted);font:500 .58rem/1.4 var(--font-mono)}.flow i{color:#526474}.flow .cloud{padding:.8rem;border-left:2px solid var(--ax-blue-light);background:var(--ax-blue-soft)}.flow .cloud strong{color:var(--ax-blue-light)}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;border:1px solid var(--ax-border);border-radius:var(--radius-lg);background:var(--ax-border);overflow:hidden}.cards article{min-height:235px;padding:1.35rem;background:var(--ax-layer)}.cards span{color:var(--ax-orange);font:600 .6rem/1 var(--font-mono)}.cards h2{margin:4rem 0 .65rem;font-size:1.2rem;letter-spacing:-.025em}.cards p,.doc p,.doc li{color:var(--ax-muted);font-size:.84rem;line-height:1.72}
+  .doc{max-width:820px;margin:0 auto;padding:clamp(1rem,3vw,2rem);border-left:1px solid var(--ax-border)}.doc h1{font-size:clamp(3rem,6vw,5.5rem)}.doc h2{margin-top:3rem;font-size:1.5rem;letter-spacing:-.035em}.doc pre{padding:1.15rem;border:1px solid var(--ax-border);border-radius:var(--radius-lg);background:#080d13;overflow:auto;line-height:1.65}.doc table{width:100%;margin-top:2rem;border-collapse:collapse}.doc th,.doc td{text-align:left;border-bottom:1px solid var(--ax-border);padding:1rem .65rem}.doc td{color:var(--ax-muted)}.doc th{width:195px}
+  footer{display:grid;grid-template-columns:1fr auto auto;gap:2rem;padding:1.7rem 28px 3.5rem;border-top:1px solid var(--ax-border);color:var(--ax-muted);font:500 .58rem/1 var(--font-mono);text-transform:uppercase;letter-spacing:.06em}footer a{color:var(--ax-blue-light);text-decoration:none}
+  @media(max-width:900px){header nav{display:none}.github{margin-left:auto}.hero{grid-template-columns:1fr;min-height:auto}.terminal{transform:none}.flow{grid-template-columns:1fr;gap:.8rem}.flow>i{display:none}.cards{grid-template-columns:1fr}.cards article{min-height:180px}.cards h2{margin-top:2rem}}
+  @media(max-width:600px){header{height:68px;padding:0 18px}.brand em{display:none}.github{padding:.55rem}.github>span{display:none}main{padding:42px 16px 80px}.hero{padding:26px 20px}h1{font-size:3.15rem}.actions{align-items:stretch;flex-direction:column}.hero-meta{display:grid;gap:.3rem}.terminal pre{min-height:270px;padding:1rem;font-size:.61rem}.chrome{font-size:.49rem}.eyebrow{font-size:.58rem}footer{grid-template-columns:1fr;padding:1.5rem 18px 3rem}footer span:nth-child(2){display:none}}
+  @media(prefers-reduced-motion:reduce){:global(html){scroll-behavior:auto}}
 </style>

@@ -5,6 +5,8 @@
 
 Serve an [OpenTUI](https://github.com/anomalyco/opentui) application over real SSH from a Cloudflare Container.
 
+Tuiport is **Agent Experience field experiment 001**: a small, public proof for software where agents and humans operate through the same interface.
+
 ```sh
 ssh your-hostname
 ```
