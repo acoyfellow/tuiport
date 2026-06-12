@@ -11,6 +11,7 @@
       "!node_modules",
       "!.alchemy",
       "!src/bundles.generated.ts",
+      "!src/public.generated.ts",
       "!**/*.svelte"
     ]
   }

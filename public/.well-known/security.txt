@@ -1,0 +1,5 @@
+Contact: https://github.com/acoyfellow/tuiport/security/advisories/new
+Canonical: https://tuiport.coey.dev/.well-known/security.txt
+Policy: https://github.com/acoyfellow/tuiport/blob/main/SECURITY.md
+Preferred-Languages: en
+Expires: 2027-06-12T00:00:00.000Z

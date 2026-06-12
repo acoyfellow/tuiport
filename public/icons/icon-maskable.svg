@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img"><title>Tuiport maskable orb</title>
+<defs>
+  <radialGradient id="orb" cx="29%" cy="22%" r="78%">
+    <stop offset="0" stop-color="#fff"/><stop offset=".18" stop-color="#dff8ff"/>
+    <stop offset=".45" stop-color="#71b8d8"/><stop offset=".72" stop-color="#f6821f"/>
+    <stop offset="1" stop-color="#351812"/>
+  </radialGradient>
+  <radialGradient id="core" cx="45%" cy="38%" r="65%">
+    <stop offset="0" stop-color="#fff3a8" stop-opacity=".9"/>
+    <stop offset=".55" stop-color="#ff7a18" stop-opacity=".48"/>
+    <stop offset="1" stop-color="#ff4f12" stop-opacity="0"/>
+  </radialGradient>
+  <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+    <feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#05090d" flood-opacity=".48"/>
+  </filter>
+</defs>
+  <rect width="512" height="512" fill="#0b1118"/>
+  <circle cx="256" cy="256" r="132" fill="url(#orb)" filter="url(#shadow)" stroke="#fff" stroke-opacity=".2" stroke-width="4"/>
+  <circle cx="281" cy="288" r="76" fill="url(#core)" style="mix-blend-mode:screen"/>
+  <path d="M178 230c27-58 87-82 144-61" fill="none" stroke="#fff" stroke-opacity=".72" stroke-width="20" stroke-linecap="round"/>
+</svg>

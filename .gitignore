@@ -1,6 +1,7 @@
 node_modules/
 build/
 bundles.generated.ts
+public.generated.ts
 .wrangler/
 .alchemy/
 .env

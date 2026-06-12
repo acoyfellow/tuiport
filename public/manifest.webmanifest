@@ -1,0 +1,59 @@
+{
+  "id": "/",
+  "name": "Tuiport — OpenTUI over SSH on Cloudflare",
+  "short_name": "Tuiport",
+  "description": "Serve OpenTUI applications over real SSH from a Cloudflare Container.",
+  "lang": "en-US",
+  "dir": "ltr",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "orientation": "any",
+  "background_color": "#0b1118",
+  "theme_color": "#0b1118",
+  "categories": ["developer", "productivity", "utilities"],
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    {
+      "src": "/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/desktop.png",
+      "sizes": "1280x672",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Tuiport desktop experience"
+    },
+    {
+      "src": "/screenshots/mobile.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Tuiport mobile documentation"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Deploy tutorial",
+      "short_name": "Tutorial",
+      "url": "/tutorial",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Product reference",
+      "short_name": "Reference",
+      "url": "/reference",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "launch_handler": { "client_mode": ["navigate-existing", "auto"] },
+  "prefer_related_applications": false
+}

@@ -1,16 +1,36 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
+
   let { section = 'home', eyebrow = '' } = $props<{ section: string; eyebrow: string }>();
   let copied = $state(false);
+  let installPrompt = $state<Event & { prompt: () => Promise<void>; userChoice: Promise<{ outcome: string }> }>();
   const command = 'ssh your-hostname';
+
+  onMount(() => {
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');
+    const captureInstall = (event: Event) => {
+      event.preventDefault();
+      installPrompt = event as typeof installPrompt;
+    };
+    window.addEventListener('beforeinstallprompt', captureInstall);
+    return () => window.removeEventListener('beforeinstallprompt', captureInstall);
+  });
+
   async function copyCommand() {
     await navigator.clipboard.writeText(command);
     copied = true;
     setTimeout(() => (copied = false), 1400);
   }
+
+  async function installApp() {
+    if (!installPrompt) return;
+    await installPrompt.prompt();
+    await installPrompt.userChoice;
+    installPrompt = undefined;
+  }
 </script>
 
 <svelte:head>
-  <meta name="description" content="Serve OpenTUI applications over SSH from a Cloudflare Container." />
   <meta name="theme-color" content="#0b1118" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
@@ -39,16 +59,23 @@
       <path class="orb-glint" d="M17 27c5-11 16-16 27-12" />
       <path class="orb-depth" d="M18 43c10 9 25 8 33-2" />
     </svg>
-    <span><strong>Agent Experience</strong><em>Tuiport / Field experiment 001</em></span>
+    <span><strong>Agent Experience</strong><em>Tuiport</em></span>
   </a>
   <nav aria-label="Documentation">
-    <a href="/tutorial">Tutorial</a><a href="/how-to">How-to</a><a href="/reference">Reference</a><a href="/explanation">Why</a>
+    <a href="/tutorial" aria-current={section === 'tutorial' ? 'page' : undefined}>Tutorial</a><a href="/how-to" aria-current={section === 'how-to' ? 'page' : undefined}>How-to</a><a href="/reference" aria-current={section === 'reference' ? 'page' : undefined}>Reference</a><a href="/explanation" aria-current={section === 'explanation' ? 'page' : undefined}>Why</a>
   </nav>
+  {#if installPrompt}<button class="install" onclick={installApp}>Install</button>{/if}
   <a class="github" href="https://github.com/acoyfellow/tuiport">Source <span aria-hidden="true">↗</span></a>
 </header>
 
 <main>
-  <p class="eyebrow">{eyebrow}</p>
+  {#if section === 'home'}
+    <p class="eyebrow">{eyebrow}</p>
+  {:else}
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Tuiport</a><span aria-hidden="true">/</span><span>{eyebrow}</span>
+    </nav>
+  {/if}
 
   {#if section === 'home'}
     <section class="hero">
@@ -56,13 +83,13 @@
       <div class="hero-glow" aria-hidden="true"></div>
       <div class="hero-copy">
         <div class="badge"><i></i> Agent Experience / Cloudflare</div>
-        <h1>OpenTUI on Cloudflare.<br /><em>One SSH command away.</em></h1>
-        <p class="lede">A working field experiment for agents and humans who live in terminals. Tuiport runs the SSH server, session, and interface inside a Cloudflare Container.</p>
+        <h1>Your terminal is<br /><em>the interface.</em></h1>
+        <p class="lede">A shared place for agents and humans to meet, work, and stay in flow—one SSH command away. Powered by OpenTUI inside a Cloudflare Container.</p>
         <div class="actions">
           <a class="primary" href="https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/tuiport">Deploy to Cloudflare <span>↘</span></a>
           <a class="secondary" href="/tutorial">Read the tutorial</a>
         </div>
-        <div class="hero-meta"><span>AX–FIELD–001</span><span>Open protocol / bounded runtime</span></div>
+        <div class="hero-meta"><span>Agent Experience / Tuiport</span><span>Open protocol / bounded runtime</span></div>
       </div>
       <button class="terminal" onclick={copyCommand} aria-label="Copy SSH command">
         <div class="chrome"><span class="state"><i></i> live session</span><span>ssh · your-hostname</span></div>
@@ -135,27 +162,31 @@ bun run dev</code></pre><p>Container development requires Docker. Test the conta
       <h2>Environment</h2><p><code>RELAY_TOKEN</code> is the only secret. It authenticates the relay to the Worker; it does not authenticate SSH users.</p>
       <h2>Lifecycle</h2><p>The Container sleeps after ten minutes without Worker traffic. The first new connection starts it. An active bridge keeps it in use.</p>
     </article>
-  {:else}
+  {:else if section === 'explanation'}
     <article class="doc"><h1>Why Tuiport has a relay</h1><p class="summary">Cloudflare can host the complete application today, but it cannot yet accept the first raw TCP byte directly into a Worker or Container.</p>
       <h2>The missing edge</h2><p>Workers TCP sockets are outbound. Container ports are reachable through their Durable Object, but only over HTTP/WebSocket fetches. Cloudflare Tunnel can expose SSH when the client runs <code>cloudflared</code>; that changes the desired <code>ssh host</code> experience.</p>
       <h2>The narrow bridge</h2><p>Spectrum accepts public SSH traffic. Today its raw TCP origin must have a reachable TCP address; Spectrum-to-Tunnel supports HTTP/HTTPS only. Tuiport therefore uses a stateless TCP-to-WebSocket relay. It cannot decrypt SSH and stores no session state.</p>
       <h2>Deletion is the design</h2><p>The application speaks SSH only inside the Container. Native inbound TCP can replace the relay and WebSocket route without rewriting the OpenTUI app. This repository is both a working proof and a precise request for that platform seam.</p>
     </article>
+  {:else if section === 'offline'}
+    <article class="doc"><h1>You are offline.</h1><p class="summary">The Tuiport application shell is cached. Reconnect to refresh the documentation or open a page you have visited before.</p><p><a class="secondary" href="/">Return home</a></p></article>
+  {:else}
+    <article class="doc"><h1>That page is not here.</h1><p class="summary">The documentation may have moved, or the address may be incomplete.</p><p><a class="secondary" href="/">Return to Tuiport</a></p></article>
   {/if}
 </main>
 
-<footer><span>Cloudflare / Agent Experience</span><span>FIELD EXPERIMENT 001 · MIT · 0.0.1</span><a href="https://coey.dev">coey.dev ↗</a></footer>
+<footer><span>Cloudflare / Agent Experience</span><span>TUIPORT · MIT · 0.0.1</span><a href="https://coey.dev">coey.dev ↗</a></footer>
 
 <style>
   :global(:root){color-scheme:dark;--font-sans:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;--font-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;--ax-ink:#0b1118;--ax-layer:#111a24;--ax-layer-2:#182431;--ax-layer-3:#223141;--ax-text:#f7f9fb;--ax-muted:#9baaba;--ax-border:rgba(174,196,216,.14);--ax-border-strong:rgba(174,196,216,.27);--ax-orange:#f6821f;--ax-amber:#f7b53b;--ax-orange-soft:rgba(246,130,31,.12);--ax-blue:#2678a4;--ax-blue-light:#71b8d8;--ax-blue-soft:rgba(74,154,194,.13);--ax-green:#63d5a2;--ax-green-soft:rgba(59,207,145,.11);--radius-sm:.25rem;--radius-md:.45rem;--radius-lg:.7rem}
   :global(*){box-sizing:border-box}:global(html){scroll-behavior:smooth}:global(body){min-width:320px;margin:0;background:var(--ax-ink);color:var(--ax-text);font-family:var(--font-sans);font-synthesis:none}:global(a){color:inherit}:global(code),pre{font-family:var(--font-mono)}:global(::selection){background:var(--ax-orange);color:#170900}
-  header,footer,main{max-width:1280px;margin:auto}header{height:76px;display:flex;align-items:center;border-bottom:1px solid var(--ax-border);padding:0 28px;gap:36px}.brand{display:flex;align-items:center;gap:.65rem;text-decoration:none}.brand svg{width:2.15rem;overflow:visible;flex:none;filter:drop-shadow(0 5px 9px rgba(10,23,34,.42))}.brand span{display:grid;line-height:1;letter-spacing:-.025em}.brand strong{font-size:.9rem}.brand em{margin-top:.28rem;color:var(--ax-muted);font:400 .66rem/1 var(--font-mono);font-style:normal;letter-spacing:.01em}.orb-shell{stroke:rgba(255,255,255,.34);stroke-width:1}.orb-core{mix-blend-mode:screen}.orb-glint{fill:none;stroke:rgba(255,255,255,.74);stroke-width:4;stroke-linecap:round}.orb-depth{fill:none;stroke:rgba(37,15,11,.24);stroke-width:3;stroke-linecap:round}nav{display:flex;gap:24px;margin-left:auto}nav a,.github{color:var(--ax-muted);font:500 .68rem/1 var(--font-mono);text-decoration:none;text-transform:uppercase;letter-spacing:.045em;transition:.15s}nav a:hover,.github:hover{color:var(--ax-text)}.github{border:1px solid var(--ax-border-strong);border-radius:var(--radius-md);padding:.65rem .75rem}
-  main{padding:72px 28px 112px}.eyebrow{display:flex;align-items:center;gap:.55rem;margin:0 0 28px;color:var(--ax-orange);font:600 .68rem/1 var(--font-mono);letter-spacing:.12em;text-transform:uppercase}.eyebrow::before{content:'';width:1.25rem;height:1px;background:currentColor}.hero{position:relative;display:grid;grid-template-columns:1.08fr .92fr;gap:clamp(36px,6vw,90px);align-items:center;min-height:540px;padding:clamp(30px,5vw,68px);border:1px solid var(--ax-border);border-radius:var(--radius-lg);background:linear-gradient(110deg,rgba(8,13,19,.98),rgba(13,31,43,.9));overflow:hidden}.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:4rem 4rem;mask-image:linear-gradient(90deg,#000,transparent 80%);pointer-events:none}.hero-glow{position:absolute;right:-3%;top:5%;width:min(44rem,57%);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 31% 24%,rgba(255,255,255,.2),rgba(113,184,216,.13) 22%,rgba(38,120,164,.12) 47%,rgba(246,130,31,.1) 68%,rgba(53,24,18,.08) 82%,transparent 83%);box-shadow:inset 0 0 42px rgba(255,255,255,.035),0 0 100px rgba(38,120,164,.09);pointer-events:none}.hero-copy,.terminal{position:relative;z-index:1}.badge{display:inline-flex;align-items:center;gap:.5rem;width:max-content;padding:.4rem .55rem;border:1px solid var(--ax-border-strong);border-radius:999px;color:#d7e5ec;background:rgba(8,13,19,.55);backdrop-filter:blur(8px);font:600 .58rem/1 var(--font-mono);text-transform:uppercase;letter-spacing:.055em}.badge i{width:.42rem;height:.42rem;border-radius:50%;background:var(--ax-orange);box-shadow:0 0 0 3px var(--ax-orange-soft)}h1{margin:1.2rem 0 1.2rem;font-size:clamp(3.25rem,6.1vw,6.35rem);line-height:.9;letter-spacing:-.072em;font-weight:730}h1 em{color:#9ccfe2;font-style:normal;font-weight:500}.lede,.summary{max-width:650px;color:#c8d4dd;font-size:clamp(1rem,1.6vw,1.18rem);line-height:1.65}.actions{display:flex;gap:.65rem;margin-top:2rem}.primary,.secondary{display:inline-flex;align-items:center;justify-content:center;gap:.6rem;min-height:2.7rem;padding:0 1rem;border-radius:var(--radius-md);font-size:.76rem;font-weight:650;text-decoration:none;transition:.15s}.primary{border:1px solid var(--ax-orange);background:var(--ax-orange);color:#1d0b00}.primary:hover{background:#ff9b49}.secondary{border:1px solid var(--ax-border-strong);background:var(--ax-layer-2);color:var(--ax-text)}.secondary:hover{border-color:var(--ax-blue-light)}.hero-meta{display:flex;gap:1.4rem;margin-top:2.2rem;color:var(--ax-muted);font:500 .55rem/1.5 var(--font-mono);text-transform:uppercase;letter-spacing:.07em}.hero-meta span:first-child{color:var(--ax-orange)}
+  header,footer,main{width:min(100%,1280px);margin-inline:auto;padding-inline:28px}header{height:76px;display:flex;align-items:center;border-bottom:1px solid var(--ax-border);gap:36px}.brand{display:flex;align-items:center;gap:.65rem;text-decoration:none}.brand svg{width:2.15rem;overflow:visible;flex:none;filter:drop-shadow(0 5px 9px rgba(10,23,34,.42))}.brand span{display:grid;line-height:1;letter-spacing:-.025em}.brand strong{font-size:.9rem}.brand em{margin-top:.28rem;color:var(--ax-muted);font:400 .66rem/1 var(--font-mono);font-style:normal;letter-spacing:.01em}.orb-shell{stroke:rgba(255,255,255,.34);stroke-width:1}.orb-core{mix-blend-mode:screen}.orb-glint{fill:none;stroke:rgba(255,255,255,.74);stroke-width:4;stroke-linecap:round}.orb-depth{fill:none;stroke:rgba(37,15,11,.24);stroke-width:3;stroke-linecap:round}header>nav{display:flex;gap:24px;margin-left:auto}header>nav a,.github{color:var(--ax-muted);font:500 .68rem/1 var(--font-mono);text-decoration:none;text-transform:uppercase;letter-spacing:.045em;transition:.15s}header>nav a:hover,.github:hover{color:var(--ax-text)}.github,.install{border:1px solid var(--ax-border-strong);border-radius:var(--radius-md);padding:.65rem .75rem}.install{color:#1d0b00;background:var(--ax-orange);border-color:var(--ax-orange);font:650 .68rem/1 var(--font-sans);cursor:pointer}.install:hover{background:#ff9b49}header>nav a[aria-current='page']{color:var(--ax-text)}
+  main{padding-block:72px 112px}.eyebrow{display:flex;align-items:center;gap:.55rem;margin:0 0 28px;color:var(--ax-orange);font:600 .68rem/1 var(--font-mono);letter-spacing:.12em;text-transform:uppercase}.eyebrow::before{content:'';width:1.25rem;height:1px;background:currentColor}.breadcrumb{display:flex;align-items:center;gap:.55rem;margin:0 0 28px;color:var(--ax-muted);font:600 .68rem/1 var(--font-mono);letter-spacing:.08em;text-transform:uppercase}.breadcrumb a{color:var(--ax-orange);text-decoration:none}.breadcrumb a:hover{text-decoration:underline;text-underline-offset:3px}.breadcrumb span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.hero{position:relative;display:grid;grid-template-columns:1.08fr .92fr;gap:clamp(36px,6vw,90px);align-items:center;min-height:540px;padding:clamp(30px,5vw,68px);border:1px solid var(--ax-border);border-radius:var(--radius-lg);background:linear-gradient(110deg,rgba(8,13,19,.98),rgba(13,31,43,.9));overflow:hidden}.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:4rem 4rem;mask-image:linear-gradient(90deg,#000,transparent 80%);pointer-events:none}.hero-glow{position:absolute;right:-3%;top:5%;width:min(44rem,57%);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 31% 24%,rgba(255,255,255,.2),rgba(113,184,216,.13) 22%,rgba(38,120,164,.12) 47%,rgba(246,130,31,.1) 68%,rgba(53,24,18,.08) 82%,transparent 83%);box-shadow:inset 0 0 42px rgba(255,255,255,.035),0 0 100px rgba(38,120,164,.09);pointer-events:none}.hero-copy,.terminal{position:relative;z-index:1}.badge{display:inline-flex;align-items:center;gap:.5rem;width:max-content;padding:.4rem .55rem;border:1px solid var(--ax-border-strong);border-radius:999px;color:#d7e5ec;background:rgba(8,13,19,.55);backdrop-filter:blur(8px);font:600 .58rem/1 var(--font-mono);text-transform:uppercase;letter-spacing:.055em}.badge i{width:.42rem;height:.42rem;border-radius:50%;background:var(--ax-orange);box-shadow:0 0 0 3px var(--ax-orange-soft)}h1{margin:1.2rem 0 1.2rem;font-size:clamp(3.25rem,6.1vw,6.35rem);line-height:.9;letter-spacing:-.072em;font-weight:730}h1 em{color:#9ccfe2;font-style:normal;font-weight:500}.lede,.summary{max-width:650px;color:#c8d4dd;font-size:clamp(1rem,1.6vw,1.18rem);line-height:1.65}.actions{display:flex;gap:.65rem;margin-top:2rem}.primary,.secondary{display:inline-flex;align-items:center;justify-content:center;gap:.6rem;min-height:2.7rem;padding:0 1rem;border-radius:var(--radius-md);font-size:.76rem;font-weight:650;text-decoration:none;transition:.15s}.primary{border:1px solid var(--ax-orange);background:var(--ax-orange);color:#1d0b00}.primary:hover{background:#ff9b49}.secondary{border:1px solid var(--ax-border-strong);background:var(--ax-layer-2);color:var(--ax-text)}.secondary:hover{border-color:var(--ax-blue-light)}.hero-meta{display:flex;gap:1.4rem;margin-top:2.2rem;color:var(--ax-muted);font:500 .55rem/1.5 var(--font-mono);text-transform:uppercase;letter-spacing:.07em}.hero-meta span:first-child{color:var(--ax-orange)}
   .terminal{text-align:left;padding:0;width:100%;border:1px solid var(--ax-border-strong);border-radius:var(--radius-lg);background:#080d13;color:#d7e2ec;box-shadow:0 32px 100px rgba(0,0,0,.42);overflow:hidden;cursor:pointer;transform:perspective(900px) rotateY(-2deg)}.chrome{height:42px;display:flex;align-items:center;justify-content:space-between;padding:0 .85rem;border-bottom:1px solid var(--ax-border);color:var(--ax-muted);font:500 .58rem/1 var(--font-mono);text-transform:uppercase;letter-spacing:.05em}.chrome .state{display:flex;align-items:center;gap:.45rem}.chrome i{width:.42rem;height:.42rem;border-radius:50%;background:var(--ax-green);box-shadow:0 0 0 3px var(--ax-green-soft)}.terminal pre{min-height:318px;margin:0;padding:1.6rem;font-size:.76rem;line-height:1.65;color:#d7e2ec}.terminal pre b{color:var(--ax-orange)}.terminal small{position:absolute;right:.8rem;bottom:.65rem;color:var(--ax-muted);font:500 .55rem/1 var(--font-mono);text-transform:uppercase;letter-spacing:.05em}
   .flow{display:grid;grid-template-columns:1fr auto 1fr auto 1.25fr auto 1fr;align-items:center;gap:1rem;margin:1rem 0;border:1px solid var(--ax-border);border-radius:var(--radius-lg);padding:1.2rem;background:var(--ax-layer)}.flow div{display:flex;flex-direction:column;gap:.35rem}.flow b{color:var(--ax-orange);font:600 .58rem/1 var(--font-mono)}.flow strong{font-size:.85rem}.flow span{color:var(--ax-muted);font:500 .58rem/1.4 var(--font-mono)}.flow i{color:#526474}.flow .cloud{padding:.8rem;border-left:2px solid var(--ax-blue-light);background:var(--ax-blue-soft)}.flow .cloud strong{color:var(--ax-blue-light)}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;border:1px solid var(--ax-border);border-radius:var(--radius-lg);background:var(--ax-border);overflow:hidden}.cards article{min-height:235px;padding:1.35rem;background:var(--ax-layer)}.cards span{color:var(--ax-orange);font:600 .6rem/1 var(--font-mono)}.cards h2{margin:4rem 0 .65rem;font-size:1.2rem;letter-spacing:-.025em}.cards p,.doc p,.doc li{color:var(--ax-muted);font-size:.84rem;line-height:1.72}
-  .doc{max-width:820px;margin:0 auto;padding:clamp(1rem,3vw,2rem);border-left:1px solid var(--ax-border)}.doc h1{font-size:clamp(3rem,6vw,5.5rem)}.doc h2{margin-top:3rem;font-size:1.5rem;letter-spacing:-.035em}.doc pre{padding:1.15rem;border:1px solid var(--ax-border);border-radius:var(--radius-lg);background:#080d13;overflow:auto;line-height:1.65}.doc table{width:100%;margin-top:2rem;border-collapse:collapse}.doc th,.doc td{text-align:left;border-bottom:1px solid var(--ax-border);padding:1rem .65rem}.doc td{color:var(--ax-muted)}.doc th{width:195px}
-  footer{display:grid;grid-template-columns:1fr auto auto;gap:2rem;padding:1.7rem 28px 3.5rem;border-top:1px solid var(--ax-border);color:var(--ax-muted);font:500 .58rem/1 var(--font-mono);text-transform:uppercase;letter-spacing:.06em}footer a{color:var(--ax-blue-light);text-decoration:none}
-  @media(max-width:900px){header nav{display:none}.github{margin-left:auto}.hero{grid-template-columns:1fr;min-height:auto}.terminal{transform:none}.flow{grid-template-columns:1fr;gap:.8rem}.flow>i{display:none}.cards{grid-template-columns:1fr}.cards article{min-height:180px}.cards h2{margin-top:2rem}}
-  @media(max-width:600px){header{height:68px;padding:0 18px}.brand em{display:none}.github{padding:.55rem}.github>span{display:none}main{padding:42px 16px 80px}.hero{padding:26px 20px}h1{font-size:3.15rem}.actions{align-items:stretch;flex-direction:column}.hero-meta{display:grid;gap:.3rem}.terminal pre{min-height:270px;padding:1rem;font-size:.61rem}.chrome{font-size:.49rem}.eyebrow{font-size:.58rem}footer{grid-template-columns:1fr;padding:1.5rem 18px 3rem}footer span:nth-child(2){display:none}}
+  .doc{width:min(100%,960px);margin:0;padding:0 0 0 clamp(1rem,2.4vw,2rem);border-left:1px solid var(--ax-border)}.doc h1{font-size:clamp(3rem,6vw,5.5rem)}.doc h2{margin-top:3rem;font-size:1.5rem;letter-spacing:-.035em}.doc pre{padding:1.15rem;border:1px solid var(--ax-border);border-radius:var(--radius-lg);background:#080d13;overflow:auto;line-height:1.65}.doc table{width:100%;margin-top:2rem;border-collapse:collapse}.doc th,.doc td{text-align:left;border-bottom:1px solid var(--ax-border);padding:1rem .65rem}.doc td{color:var(--ax-muted)}.doc th{width:195px}
+  footer{display:grid;grid-template-columns:1fr auto auto;gap:2rem;padding-block:1.7rem 3.5rem;border-top:1px solid var(--ax-border);color:var(--ax-muted);font:500 .58rem/1 var(--font-mono);text-transform:uppercase;letter-spacing:.06em}footer a{color:var(--ax-blue-light);text-decoration:none}
+  @media(max-width:900px){header>nav{display:none}.github{margin-left:auto}.hero{grid-template-columns:1fr;min-height:auto}.terminal{transform:none}.flow{grid-template-columns:1fr;gap:.8rem}.flow>i{display:none}.cards{grid-template-columns:1fr}.cards article{min-height:180px}.cards h2{margin-top:2rem}}
+  @media(max-width:600px){header{height:68px;padding-inline:18px}.brand em{display:none}.github{padding:.55rem}.github>span{display:none}main{padding:42px 18px 80px}.hero{padding:26px 20px}h1{font-size:3.15rem}.actions{align-items:stretch;flex-direction:column}.hero-meta{display:grid;gap:.3rem}.terminal pre{min-height:270px;padding:1rem;font-size:.61rem}.chrome{font-size:.49rem}.eyebrow{font-size:.58rem}footer{grid-template-columns:1fr;padding:1.5rem 18px 3rem}footer span:nth-child(2){display:none}}
   @media(prefers-reduced-motion:reduce){:global(html){scroll-behavior:auto}}
 </style>

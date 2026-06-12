@@ -1,0 +1,20 @@
+# Tuiport
+
+> An Agent Experience release: a shared terminal interface for agents and humans, served over real SSH from a Cloudflare Container.
+
+Canonical site: https://tuiport.coey.dev
+Source: https://github.com/acoyfellow/tuiport
+License: MIT
+
+## Documentation
+
+- [Tutorial](https://tuiport.coey.dev/tutorial): Deploy the Cloudflare application and connect a public SSH hostname.
+- [How-to guides](https://tuiport.coey.dev/how-to): Customize the OpenTUI app, authentication, relay token, and domains.
+- [Reference](https://tuiport.coey.dev/reference): Worker routes, ports, resources, configuration, and lifecycle.
+- [Explanation](https://tuiport.coey.dev/explanation): Why direct SSH currently needs a narrow TCP-to-WebSocket relay.
+
+## Architecture
+
+OpenSSH → Cloudflare Spectrum → stateless TCP relay → authenticated WebSocket → Worker → Durable Object → Cloudflare Container → @opentui/ssh.
+
+The relay forwards encrypted SSH bytes and holds no application state. It is designed to disappear when native inbound TCP can route to a Worker or Container binding.

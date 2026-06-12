@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /bridge
+Disallow: /api/
+
+Sitemap: https://tuiport.coey.dev/sitemap.xml
