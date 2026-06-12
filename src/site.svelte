@@ -177,7 +177,7 @@
 │  press q to disconnect              │
 │                                     │
 └─────────────────────────────────────┘</pre>
-        <div bind:this={demoElement} class="demo-host" aria-label="Live terminal"></div>
+        <div bind:this={demoElement} class="demo-host" role="application" aria-label="Live terminal"></div>
         {#if demoStatus === 'connecting'}<div class="demo-message">Waking a real Cloudflare Container…</div>{/if}
         {#if demoStatus === 'error'}<div class="demo-message">The live demo is busy or unavailable. Try again.</div>{/if}
         {#if demoStatus === 'ended'}<div class="demo-message">Session closed. Start another when you are ready.</div>{/if}
