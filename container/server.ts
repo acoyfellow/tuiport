@@ -15,6 +15,7 @@ type DemoRuntime = {
   stdout?: Writable;
   idleTimer?: ReturnType<typeof setTimeout>;
   maxTimer?: ReturnType<typeof setTimeout>;
+  outputReady?: boolean;
   closed: boolean;
 };
 
@@ -150,7 +151,7 @@ async function openDemo(ws: Bun.ServerWebSocket<SocketData>) {
   const stdin = new Readable({ read() {} });
   const stdout = new Writable({
     write(chunk, _encoding, callback) {
-      if (demo.closed) return callback();
+      if (demo.closed || !demo.outputReady) return callback();
       try {
         ws.send(Buffer.from(chunk));
         callback();
@@ -187,6 +188,8 @@ async function openDemo(ws: Bun.ServerWebSocket<SocketData>) {
       return;
     }
     demo.renderer = renderer;
+    demo.outputReady = true;
+    ws.send('\u001b[?1049h\u001b[2J\u001b[H\u001b[?25l');
     mountTuiport(renderer, {
       identity: `visitor-${crypto.randomUUID().slice(0, 6)}`,
       environment: ws.data.colo || 'Cloudflare edge',
