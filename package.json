@@ -10,6 +10,7 @@
     "build": "bun run assets:embed && bun run build.mjs",
     "check": "bun run build && tsc --noEmit && biome check .",
     "dev": "bun run build && wrangler dev",
+    "local": "bash scripts/local.sh",
     "deploy": "bun run build && wrangler deploy",
     "deploy:alchemy": "bun run build && alchemy deploy",
     "destroy": "alchemy destroy",

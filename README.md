@@ -8,7 +8,12 @@ Serve an [OpenTUI](https://github.com/anomalyco/opentui) application over real S
 Tuiport is an **Agent Experience** release: a shared terminal interface where agents and humans can meet, work, and stay in flow.
 
 ```sh
-ssh your-hostname
+git clone https://github.com/acoyfellow/tuiport
+cd tuiport && bun install
+bun run local
+
+# in another terminal
+ssh -p 2222 localhost
 ```
 
 Tuiport keeps the SSH server and application on Cloudflare. A 70-line stateless relay carries encrypted SSH bytes from a public TCP address to the Worker because Workers and Containers do not yet accept direct inbound TCP.
@@ -89,13 +94,17 @@ The same documentation is published at <https://tuiport.coey.dev>.
 
 ## Local development
 
+Run the complete SSH loop with Docker:
+
 ```sh
-cp .dev.vars.example .dev.vars
 bun install
-bun run dev
+bun run local
+
+# in another terminal
+ssh -p 2222 localhost
 ```
 
-Docker is required for Container development. Run `bun run check` before pushing.
+Run the Worker development server separately with `bun run dev`. Run `bun run check` before pushing.
 
 ## Status
 
