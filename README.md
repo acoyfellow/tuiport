@@ -1,5 +1,7 @@
 # Tuiport
 
+![Tuiport — real SSH apps, built with OpenTUI, on Cloudflare](.github/readme-banner.png)
+
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/tuiport)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 

@@ -3,6 +3,7 @@ import sharp from 'sharp';
 
 await mkdir('public/icons', { recursive: true });
 await mkdir('public/screenshots', { recursive: true });
+await mkdir('.github', { recursive: true });
 
 const orb = `
 <defs>
@@ -49,6 +50,19 @@ const socialSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="
   <text x="80" y="532" fill="#f6821f" font-family="monospace" font-size="18" font-weight="600" letter-spacing="2">TUIPORT · OPENTUI ON CLOUDFLARE</text>
 </svg>`;
 
+const readmeBanner = `<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="400" viewBox="0 0 1280 400">${orb}
+  <rect width="1280" height="400" fill="#0b1118"/>
+  <g opacity=".1" stroke="#d8e7ef"><path d="M0 80h1280M0 160h1280M0 240h1280M0 320h1280"/><path d="M80 0v400M160 0v400M240 0v400M320 0v400M400 0v400M480 0v400M560 0v400M640 0v400M720 0v400M800 0v400M880 0v400M960 0v400M1040 0v400M1120 0v400M1200 0v400"/></g>
+  <circle cx="1066" cy="196" r="150" fill="url(#orb)" filter="url(#shadow)" stroke="#fff" stroke-opacity=".2" stroke-width="3"/>
+  <circle cx="1096" cy="232" r="88" fill="url(#core)" style="mix-blend-mode:screen"/>
+  <path d="M974 168c31-64 100-90 161-64" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width="21" stroke-linecap="round"/>
+  <circle cx="74" cy="70" r="9" fill="#f6821f"/><text x="96" y="78" fill="#f7f9fb" font-family="Arial,sans-serif" font-size="22" font-weight="700" letter-spacing="1">AGENT EXPERIENCE</text>
+  <text x="68" y="196" fill="#f7f9fb" font-family="Arial,sans-serif" font-size="66" font-weight="750" letter-spacing="-3">Real SSH apps.</text>
+  <text x="68" y="266" fill="#9ccfe2" font-family="Arial,sans-serif" font-size="66" font-weight="500" letter-spacing="-3">Built with OpenTUI.</text>
+  <text x="70" y="318" fill="#c8d4dd" font-family="Arial,sans-serif" font-size="23">Run an OpenTUI application over real SSH from a Cloudflare Container.</text>
+  <text x="70" y="360" fill="#f6821f" font-family="monospace" font-size="16" font-weight="600" letter-spacing="2">TUIPORT · OPENTUI ON CLOUDFLARE</text>
+</svg>`;
+
 const mobileScreenshot = `<svg xmlns="http://www.w3.org/2000/svg" width="750" height="1334" viewBox="0 0 750 1334">${orb}
   <rect width="750" height="1334" fill="#0b1118"/><circle cx="590" cy="255" r="220" fill="url(#orb)" opacity=".38"/>
   <text x="50" y="78" fill="#f7f9fb" font-family="Arial,sans-serif" font-size="26" font-weight="700">AGENT EXPERIENCE</text>
@@ -72,6 +86,7 @@ await Promise.all([
   sharp(Buffer.from(iconSvg)).resize(180, 180).png().toFile('public/icons/apple-touch-icon.png'),
   sharp(Buffer.from(iconSvg)).resize(32, 32).png().toFile('public/favicon-32x32.png'),
   sharp(Buffer.from(socialSvg)).png({ compressionLevel: 9 }).toFile('public/og-card.png'),
+  sharp(Buffer.from(readmeBanner)).png({ compressionLevel: 9 }).toFile('.github/readme-banner.png'),
   sharp(Buffer.from(socialSvg))
     .resize(1280, 672)
     .png({ compressionLevel: 9 })
