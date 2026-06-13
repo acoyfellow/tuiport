@@ -186,7 +186,7 @@
       <div class="hero-glow" aria-hidden="true"></div>
       <div class="hero-copy">
         <div class="badge"><i></i> OpenTUI · SSH · Cloudflare</div>
-        <h1>Wish-style SSH apps.<br /><em>Built with OpenTUI.</em></h1>
+        <h1>Real SSH apps.<br /><em>Built with OpenTUI.</em></h1>
         <p class="lede">Run an OpenTUI application as an SSH server in a Cloudflare Container. Connect from any terminal with ordinary <code>ssh</code>.</p>
         <div class="actions">
           <a class="primary" href="https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/tuiport">Deploy to Cloudflare <span>↘</span></a>

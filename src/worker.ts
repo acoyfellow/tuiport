@@ -29,7 +29,7 @@ const pages = {
     section: 'home',
     title: 'Tuiport — OpenTUI SSH Apps on Cloudflare',
     description:
-      'Build Wish-style SSH applications with OpenTUI, run the same container locally or on Cloudflare, and connect from any terminal with ordinary SSH.',
+      'Build real SSH apps with OpenTUI, run the same container locally or on Cloudflare, and connect from any terminal with ordinary SSH.',
     eyebrow: 'OpenTUI · SSH · Cloudflare Containers',
   },
   '/tutorial': {

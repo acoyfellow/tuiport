@@ -2,7 +2,7 @@
   "id": "/",
   "name": "Tuiport — OpenTUI SSH Apps on Cloudflare",
   "short_name": "Tuiport",
-  "description": "Build Wish-style SSH applications with OpenTUI, run the same container locally or on Cloudflare, and connect with ordinary SSH.",
+  "description": "Build real SSH apps with OpenTUI, run the same container locally or on Cloudflare, and connect with ordinary SSH.",
   "lang": "en-US",
   "dir": "ltr",
   "start_url": "/?source=pwa",
