@@ -37,31 +37,47 @@ This is a real Container-backed session, not a recording. It intentionally expos
 
 ## Deploy
 
-1. Click **Deploy to Cloudflare** above.
-2. Set the relay secret and a stable SSH host key:
+### Step 1 — Get it running
 
-   ```sh
-   bun run secrets:gen          # prints RELAY_TOKEN and SSH_HOST_KEY_B64
-   bunx wrangler secret put RELAY_TOKEN
-   bunx wrangler secret put SSH_HOST_KEY_B64
-   ```
+The site and the live browser demo need no secrets. Deploy in one command:
 
-   `secrets:gen` uses `ssh-keygen`; macOS LibreSSL cannot generate Ed25519 keys via `openssl genpkey`.
+```sh
+git clone https://github.com/acoyfellow/tuiport
+cd tuiport && bun install
+wrangler login      # or `bun run setup` will start it for you
+bun run setup
+```
 
-3. Run the relay on any host with a public TCP address:
+`bun run setup` deploys the Worker and Container to the account you are logged
+into, generates `RELAY_TOKEN` and `SSH_HOST_KEY_B64` for you, and stores them
+with the bulk secrets API. No secret is ever pasted into a web form. It prints
+your deployed URL when it finishes.
+
+Prefer no local toolchain? The **Deploy to Cloudflare** button above also works
+and requires no secrets — it gives you the site and browser demo. Run `bun run
+setup` (or Step 2) afterward to enable SSH.
+
+### Step 2 — Expose plain `ssh <hostname>` (optional)
+
+This is a separate step from the deploy, because Workers and Containers cannot
+yet accept direct inbound TCP.
+
+1. Run the relay on any host with a public TCP address:
 
    ```sh
    cd relay && go build
    ./tuiport-relay \
      -listen :22 \
      -upstream wss://YOUR-WORKER.workers.dev/bridge \
-     -token "$RELAY_TOKEN"
+     -token "$RELAY_TOKEN"          # value saved in .dev.vars by setup
    ```
 
-4. Point a Cloudflare Spectrum SSH application at the relay.
-5. Connect with `ssh your-hostname`.
+2. Point a Cloudflare Spectrum SSH application (tcp/22) at the relay.
+3. Connect with `ssh your-hostname`.
 
-The Deploy button provisions the Worker, Durable Object, and Container in the user's Cloudflare account. Spectrum and its TCP origin are configured separately because Deploy to Cloudflare does not provision Spectrum.
+Spectrum is configured separately because the Deploy button and `setup` do not
+provision it. `setup` saves `RELAY_TOKEN` and `SSH_HOST_KEY_B64` to `.dev.vars`
+(gitignored) so the relay can reuse the same values.
 
 ## Make it yours
 

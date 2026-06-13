@@ -6,7 +6,10 @@
   "compatibility_flags": ["nodejs_compat"],
   "workers_dev": true,
   "observability": { "enabled": true },
-  "secrets": { "required": ["RELAY_TOKEN", "SSH_HOST_KEY_B64"] },
+  // RELAY_TOKEN and SSH_HOST_KEY_B64 are NOT required to deploy. The site and
+  // browser demo run with no secrets; `/bridge` stays closed (401) and the
+  // Container uses an ephemeral host key until `bun run setup` enables public
+  // SSH. This keeps first deploy zero-config.
   "build": { "command": "bun run build" },
   "containers": [
     {

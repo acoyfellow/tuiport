@@ -258,20 +258,22 @@
       </div>
     </section>
   {:else if section === 'tutorial'}
-    <article class="doc"><h1>Deploy Tuiport</h1><p class="summary">Get the sample OpenTUI application running in your Cloudflare account, then connect a public SSH hostname.</p>
-      <h2>1. Deploy the Cloudflare side</h2><p>Use the button. Cloudflare forks the repository, builds the Worker and Container, and connects future pushes to Workers Builds.</p>
-      <p><a class="primary" href="https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/tuiport">Deploy to Cloudflare</a></p>
-      <h2>2. Generate the secrets</h2><pre><code>bun run secrets:gen
-bunx wrangler secret put RELAY_TOKEN
-bunx wrangler secret put SSH_HOST_KEY_B64</code></pre><p><code>secrets:gen</code> prints both values. Use the same <code>RELAY_TOKEN</code> when starting the relay.</p>
-      <h2>3. Run the relay</h2><pre><code>cd relay
+    <article class="doc"><h1>Deploy Tuiport</h1><p class="summary">Two steps: get it running with no secrets, then optionally expose a public SSH hostname.</p>
+      <h2>Step 1 — Get it running</h2><p>The site and the live browser demo need no secrets. From a clone of the repository:</p>
+      <pre><code>bun install
+wrangler login      # or `bun run setup` starts it for you
+bun run setup</code></pre>
+      <p><code>bun run setup</code> deploys the Worker and Container to the account you are logged into, generates <code>RELAY_TOKEN</code> and <code>SSH_HOST_KEY_B64</code>, stores them with the bulk secrets API, and prints your deployed URL. No secret is pasted into a web form.</p>
+      <p>Prefer no local toolchain? The <a class="primary" href="https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/tuiport">Deploy to Cloudflare</a> button also works and needs no secrets — run <code>bun run setup</code> afterward to enable SSH.</p>
+      <h2>Step 2 — Expose <code>ssh &lt;hostname&gt;</code> (optional)</h2><p>A separate step, because Workers and Containers cannot yet accept direct inbound TCP. Run the relay on a host with a public TCP address:</p>
+      <pre><code>cd relay
 go build
 ./tuiport-relay \
   -listen :22 \
   -upstream wss://YOUR-WORKER.workers.dev/bridge \
-  -token "$RELAY_TOKEN"</code></pre>
-      <h2>4. Connect your SSH hostname</h2><p><a href="https://developers.cloudflare.com/spectrum/">Cloudflare Spectrum</a> is the public TCP proxy for this last step. Create one SSH application that sends <code>ssh.example.com:22</code> to the relay's public address on port 22. Spectrum requires a paid Cloudflare plan and is configured separately because the deploy button cannot provision it.</p>
-      <h2>5. Connect</h2><pre><code>ssh ssh.example.com</code></pre><p>The sample accepts any valid public key and uses its verified fingerprint as identity. Replace that policy before serving private data.</p>
+  -token "$RELAY_TOKEN"      # saved in .dev.vars by setup</code></pre>
+      <p>Then point <a href="https://developers.cloudflare.com/spectrum/">Cloudflare Spectrum</a> (a public TCP proxy, paid plan) at the relay: one SSH application sending <code>ssh.example.com:22</code> to the relay's address on port 22. Spectrum is configured separately because neither the deploy button nor <code>setup</code> can provision it.</p>
+      <h2>Connect</h2><pre><code>ssh ssh.example.com</code></pre><p>The sample accepts any valid public key and uses its verified fingerprint as identity. Replace that policy before serving private data.</p>
     </article>
   {:else if section === 'how-to'}
     <article class="doc"><h1>How-to guides</h1><p class="summary">Small recipes for changing the shipped proof.</p>

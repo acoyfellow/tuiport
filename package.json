@@ -16,6 +16,7 @@
     "destroy": "alchemy destroy",
     "public:check": "bash scripts/check-public.sh",
     "secrets:gen": "bash scripts/gen-secrets.sh",
+    "setup": "bun run scripts/setup.ts",
     "site:audit": "bun run scripts/audit-site.ts",
     "relay:build": "cd relay && go build ./..."
   },
