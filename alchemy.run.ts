@@ -1,8 +1,11 @@
 import alchemy from 'alchemy';
 import { Container, Worker } from 'alchemy/cloudflare';
+import { loadDeploymentEnv } from './alchemy.env';
+
+const deployment = loadDeploymentEnv();
 
 const app = await alchemy('tuiport', {
-  password: process.env.ALCHEMY_PASSWORD || 'tuiport-local',
+  password: deployment.alchemyPassword,
 });
 
 const TUIPORT = await Container('tuiport-app', {
@@ -24,8 +27,8 @@ export const WORKER = await Worker('tuiport', {
   domains: [{ domainName: 'tuiport.coey.dev', adopt: true }],
   bindings: {
     TUIPORT,
-    RELAY_TOKEN: alchemy.secret(process.env.RELAY_TOKEN || 'replace-me-before-production'),
-    SSH_HOST_KEY_B64: alchemy.secret(process.env.SSH_HOST_KEY_B64 || ''),
+    RELAY_TOKEN: alchemy.secret(deployment.relayToken),
+    SSH_HOST_KEY_B64: alchemy.secret(deployment.sshHostKeyBase64),
   },
 });
 

@@ -6,6 +6,7 @@
   "compatibility_flags": ["nodejs_compat"],
   "workers_dev": true,
   "observability": { "enabled": true },
+  "secrets": { "required": ["RELAY_TOKEN", "SSH_HOST_KEY_B64"] },
   "build": { "command": "bun run build" },
   "containers": [
     {

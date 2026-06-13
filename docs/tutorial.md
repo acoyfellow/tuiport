@@ -16,11 +16,10 @@ Use the Deploy to Cloudflare button in the README. Cloudflare forks the reposito
 Generate a relay secret and stable SSH host key, then add both in the deployed Worker's settings:
 
 ```sh
-openssl rand -hex 32
-openssl genpkey -algorithm ED25519 | base64
+bun run secrets:gen
 ```
 
-Store them as `RELAY_TOKEN` and `SSH_HOST_KEY_B64`. The stable host key prevents fingerprint warnings after a Container restart.
+This prints `RELAY_TOKEN` and `SSH_HOST_KEY_B64`. It uses `ssh-keygen` (present on macOS and Linux); macOS LibreSSL cannot generate Ed25519 keys with `openssl genpkey`. Store both as Worker secrets. The stable host key prevents fingerprint warnings after a Container restart.
 
 ## Start the relay
 

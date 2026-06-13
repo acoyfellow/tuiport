@@ -261,8 +261,9 @@
     <article class="doc"><h1>Deploy Tuiport</h1><p class="summary">Get the sample OpenTUI application running in your Cloudflare account, then connect a public SSH hostname.</p>
       <h2>1. Deploy the Cloudflare side</h2><p>Use the button. Cloudflare forks the repository, builds the Worker and Container, and connects future pushes to Workers Builds.</p>
       <p><a class="primary" href="https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/tuiport">Deploy to Cloudflare</a></p>
-      <h2>2. Choose a relay secret</h2><pre><code>openssl rand -hex 32
-bunx wrangler secret put RELAY_TOKEN</code></pre><p>Use the same value when starting the relay.</p>
+      <h2>2. Generate the secrets</h2><pre><code>bun run secrets:gen
+bunx wrangler secret put RELAY_TOKEN
+bunx wrangler secret put SSH_HOST_KEY_B64</code></pre><p><code>secrets:gen</code> prints both values. Use the same <code>RELAY_TOKEN</code> when starting the relay.</p>
       <h2>3. Run the relay</h2><pre><code>cd relay
 go build
 ./tuiport-relay \

@@ -41,9 +41,12 @@ This is a real Container-backed session, not a recording. It intentionally expos
 2. Set the relay secret and a stable SSH host key:
 
    ```sh
-   openssl rand -hex 32 | bunx wrangler secret put RELAY_TOKEN
-   openssl genpkey -algorithm ED25519 | base64 | bunx wrangler secret put SSH_HOST_KEY_B64
+   bun run secrets:gen          # prints RELAY_TOKEN and SSH_HOST_KEY_B64
+   bunx wrangler secret put RELAY_TOKEN
+   bunx wrangler secret put SSH_HOST_KEY_B64
    ```
+
+   `secrets:gen` uses `ssh-keygen`; macOS LibreSSL cannot generate Ed25519 keys via `openssl genpkey`.
 
 3. Run the relay on any host with a public TCP address:
 

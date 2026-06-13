@@ -1,4 +1,4 @@
-# Generate with: openssl rand -hex 32
+# Generate both with: bun run secrets:gen
+# (uses ssh-keygen; macOS LibreSSL cannot make Ed25519 keys via openssl genpkey)
 RELAY_TOKEN=replace-me
-# Generate with: openssl genpkey -algorithm ED25519 | base64
 SSH_HOST_KEY_B64=replace-me

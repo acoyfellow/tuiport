@@ -15,6 +15,7 @@
     "deploy:alchemy": "bun run build && alchemy deploy",
     "destroy": "alchemy destroy",
     "public:check": "bash scripts/check-public.sh",
+    "secrets:gen": "bash scripts/gen-secrets.sh",
     "site:audit": "bun run scripts/audit-site.ts",
     "relay:build": "cd relay && go build ./..."
   },
@@ -42,7 +43,7 @@
         "description": "A random secret used by the TCP relay. Generate one with `openssl rand -hex 32`."
       },
       "SSH_HOST_KEY_B64": {
-        "description": "A stable Ed25519 SSH host key. Generate one with `openssl genpkey -algorithm ED25519 | base64`."
+        "description": "A stable Ed25519 SSH host key. Generate both secrets with `bun run secrets:gen`."
       }
     }
   }
